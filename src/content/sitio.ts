@@ -9,8 +9,8 @@ export const sitio: Sitio = {
   ciudad: 'Zapopan, Jalisco',
   direccion: 'Av. Ejemplo 1240, Col. Demostración, 45000 Zapopan, Jalisco',
   telefonoLlamadas: '33 0000 0000',
-  telefonoWhatsapp: '520000000000',
-  mensajeWhatsapp: '¡Hola! Vi su página y quiero información de las clases.',
+  telefonoWhatsapp: '522206315612',
+  mensajeWhatsapp: 'Vi su página demo y me interesa trabajar con ustedes! ¿Me dan más información?',
   horarioAtencion: 'Lun a sáb, 6:00 a 22:00 h',
   instagram: {
     usuario: '@supergimnasio.box',
