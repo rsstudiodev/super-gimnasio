@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #0d0d0f; color: #f4f2ee; font-family: 'Barlow', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #e0a33c; text-decoration: none; }
+  a:hover { color: #f0bd67; }
+  * { box-sizing: border-box; }
+  @keyframes sg-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes sg-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</helmet>
+
+<div style="position:relative;width:100%;min-height:100vh;background:#0d0d0f;overflow-x:hidden">
+
+  <header style="position:fixed;top:0;left:0;z-index:100;width:100%;backdrop-filter:blur(24px);background:rgba(13,13,15,0.72);border-bottom:1px solid rgba(244,242,238,0.08)">
+    <div style="margin:0 auto;width:100%;max-width:1280px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px;height:80px">
+      <a href="#top" onClick="{{ goHome }}" style="display:flex;align-items:center;gap:12px;color:#f4f2ee">
+        <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9999px;border:1px solid rgba(224,163,60,0.45);color:#e0a33c;font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.02em">SG</span>
+        <span style="display:flex;flex-direction:column;line-height:1.05">
+          <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.16em;text-transform:uppercase;color:#f4f2ee">Super Gimnasio</span>
+          <span style="font-family:'Barlow',sans-serif;font-weight:400;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#9a9aa2">Escuela de box</span>
+        </span>
+      </a>
+      <button onClick="{{ toggleMenu }}" style="display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;border-radius:9999px;padding:11px 22px;background:rgba(224,163,60,0.12);color:#e0a33c;font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;transition:all 300ms" style-hover="background:rgba(224,163,60,0.22)">Menú</button>
+    </div>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMenu }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:110"></div>
+    <aside style="position:fixed;top:0;right:0;height:100%;width:min(100%,440px);z-index:120;background:#16161a;border-left:1px solid rgba(244,242,238,0.1);border-top-left-radius:32px;border-bottom-left-radius:32px;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:flex-end;align-items:center;padding:20px 28px;border-bottom:1px solid rgba(244,242,238,0.08)">
+        <button onClick="{{ closeMenu }}" aria-label="Cerrar menú" style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;border:0;cursor:pointer;border-radius:9999px;background:rgba(224,163,60,0.08);color:#e0a33c;font-size:22px;transition:all 300ms" style-hover="background:rgba(224,163,60,0.18)">✕</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:28px">
+        <h2 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:rgba(244,242,238,0.45)">Clases</h2>
+        <nav style="display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ serviceLinks }}" as="item" hint-placeholder-count="3">
+            <button onClick="{{ item.onClick }}" style="text-align:left;border:0;cursor:pointer;background:transparent;padding:12px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.01em;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.1);color:#e0a33c">{{ item.name }}</button>
+          </sc-for>
+        </nav>
+        <hr style="margin:24px 0;border:0;border-top:1px solid rgba(244,242,238,0.1)">
+        <nav style="display:flex;flex-direction:column;gap:2px">
+          <a href="#servicios" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Qué ofrecemos</a>
+          <a href="#horarios" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Horarios</a>
+          <a href="#galeria" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Galería</a>
+          <a href="#instagram" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Instagram</a>
+          <a href="#entrenadores" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Entrenadores</a>
+          <a href="#precios" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Membresías</a>
+          <a href="#resenas" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Reseñas</a>
+          <a href="#ubicacion" onClick="{{ closeMenu }}" style="padding:10px 16px;border-radius:16px;font-family:'Archivo',sans-serif;font-weight:600;font-size:20px;color:#f4f2ee;transition:all 300ms" style-hover="background:rgba(224,163,60,0.08);color:#e0a33c">Ubicación</a>
+        </nav>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main id="top" data-screen-label="Home">
+
+    <section style="position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;width:100%;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1517438322307-e67111335449?auto=format&amp;fit=crop&amp;w=1600&amp;h=1000&amp;q=70" alt="Entrenamiento de box" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(0.5) brightness(0.62);mask-image:linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,0.35) 78%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,0.35) 78%,transparent 100%)">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,13,15,0.55) 0%,rgba(13,13,15,0.35) 40%,rgba(13,13,15,0.85) 82%,#0d0d0f 100%)"></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 18%,rgba(224,163,60,0.16) 0%,transparent 62%)"></div>
+      <div style="position:relative;width:100%;max-width:960px;display:flex;flex-direction:column;align-items:center;gap:28px;animation:sg-fade 700ms ease-out both">
+        <span style="display:inline-flex;align-items:center;gap:10px;border-radius:9999px;border:1px solid rgba(224,163,60,0.35);background:rgba(224,163,60,0.1);padding:9px 20px;font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:#e0a33c">{{ ctaText }}</span>
+        <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(40px,8.5vw,88px);line-height:0.98;letter-spacing:-0.03em;text-transform:uppercase;color:#f4f2ee;text-wrap:balance">Aquí nadie<br>empieza sabiendo</h1>
+        <p style="margin:0;max-width:620px;font-size:clamp(17px,2.2vw,21px);font-weight:300;line-height:1.6;color:rgba(244,242,238,0.72);text-wrap:pretty">Escuela de box en Jalisco para principiantes, niños y quien quiera ponerse en forma. Entrenamos técnica, condición y respeto — a tu ritmo, con guantes prestados el primer día.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+          <a href="#servicios" style="display:inline-flex;align-items:center;gap:10px;border-radius:9999px;background:#e0a33c;color:#141416;padding:16px 30px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;transition:all 300ms" style-hover="background:#f0bd67;color:#141416">Ver las clases <span style="font-size:18px">→</span></a>
+          <a href="#horarios" style="display:inline-flex;align-items:center;gap:10px;border-radius:9999px;border:1px solid rgba(244,242,238,0.25);color:#f4f2ee;padding:16px 30px;font-family:'Archivo',sans-serif;font-weight:600;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.6);color:#e0a33c">Horarios</a>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;margin-top:18px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;color:#e0a33c">7</span><span style="font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,242,238,0.5)">Días a la semana</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;color:#e0a33c">12</span><span style="font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,242,238,0.5)">Máx. por grupo</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;color:#e0a33c">6+</span><span style="font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,242,238,0.5)">Años de edad</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Qué ofrecemos</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65);text-wrap:pretty">Tres caminos, un mismo gimnasio. Puedes cambiar de clase cuando quieras.</p>
+      </div>
+      <div style="width:100%;max-width:1152px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+        <sc-for list="{{ serviceCards }}" as="item" hint-placeholder-count="3">
+          <article style="display:flex;flex-direction:column;overflow:hidden;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;box-shadow:0 1px 2px rgba(0,0,0,0.4);transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.34);box-shadow:0 10px 30px rgba(0,0,0,0.5)">
+            <div style="position:relative;height:220px;overflow:hidden">
+              <img src="{{ item.img }}" alt="{{ item.name }}" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.8);transition:transform 500ms" style-hover="transform:scale(1.05)">
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,22,26,0) 40%,#16161a 100%)"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;padding:24px 26px 28px;flex:1">
+              <span style="font-family:'Barlow',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.26em;text-transform:uppercase;color:#e0a33c">{{ item.kicker }}</span>
+              <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:26px;line-height:1.1;letter-spacing:-0.01em;color:#f4f2ee">{{ item.name }}</h3>
+              <p style="margin:0;flex:1;font-size:16px;font-weight:300;line-height:1.6;color:rgba(244,242,238,0.66);text-wrap:pretty">{{ item.blurb }}</p>
+              <button onClick="{{ item.onClick }}" style="align-self:flex-start;margin-top:8px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(224,163,60,0.3);cursor:pointer;border-radius:9999px;background:transparent;padding:11px 20px;font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#e0a33c;transition:all 300ms" style-hover="background:rgba(224,163,60,0.14);border-color:rgba(224,163,60,0.6)">Ver clase <span style="font-size:15px">→</span></button>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="horarios" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Horarios</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Llega 10 minutos antes si es tu primera vez. Datos de demostración.</p>
+      </div>
+      <div style="width:100%;max-width:1152px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table style="width:100%;min-width:760px;border-collapse:collapse;font-size:14px">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:18px 20px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Hora</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Lun</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Mar</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Mié</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Jue</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Vie</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Sáb</th>
+                <th style="text-align:left;padding:18px 14px;background:rgba(224,163,60,0.08);font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a33c">Dom</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ scheduleRows }}" as="row" hint-placeholder-count="5">
+                <tr>
+                  <td style="padding:16px 20px;border-top:1px solid rgba(244,242,238,0.08);font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#f4f2ee;white-space:nowrap">{{ row.hora }}</td>
+                  <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="7">
+                    <td style="padding:16px 14px;border-top:1px solid rgba(244,242,238,0.08);font-size:13px;font-weight:400;line-height:1.35;color:{{ cell.color }}">{{ cell.label }}</td>
+                  </sc-for>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:26px">
+        <span style="display:inline-flex;align-items:center;gap:9px;font-size:13px;color:rgba(244,242,238,0.6)"><span style="width:10px;height:10px;border-radius:9999px;background:#e0a33c"></span>Principiantes</span>
+        <span style="display:inline-flex;align-items:center;gap:9px;font-size:13px;color:rgba(244,242,238,0.6)"><span style="width:10px;height:10px;border-radius:9999px;background:#8fb0d8"></span>Niños</span>
+        <span style="display:inline-flex;align-items:center;gap:9px;font-size:13px;color:rgba(244,242,238,0.6)"><span style="width:10px;height:10px;border-radius:9999px;background:#c9c3b6"></span>Acondicionamiento</span>
+      </div>
+    </section>
+
+    <section id="galeria" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">El gimnasio</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Costales, ring, y gente que ayer tampoco sabía tirar un jab.</p>
+      </div>
+      <div style="width:100%;max-width:1152px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+        <sc-for list="{{ galleryImages }}" as="item" hint-placeholder-count="6">
+          <figure style="margin:0;overflow:hidden;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:20px;transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.34)">
+            <img src="{{ item.src }}" alt="{{ item.alt }}" style="display:block;width:100%;height:260px;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:transform 500ms" style-hover="transform:scale(1.04)">
+          </figure>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="instagram" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Síguenos el paso</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Feed de Instagram incrustado — contenido de demostración.</p>
+      </div>
+      <div style="width:100%;max-width:1024px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;overflow:hidden">
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding:22px 26px;border-bottom:1px solid rgba(244,242,238,0.08)">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:9999px;border:2px solid #e0a33c;color:#e0a33c;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px">SG</span>
+            <span style="display:flex;flex-direction:column;gap:4px">
+              <span style="display:flex;align-items:center;gap:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:18px;color:#f4f2ee">
+                <svg width="17" height="17" viewBox="0 0 16 16" fill="#e0a33c" aria-hidden="true"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"></path></svg>
+                @supergimnasio.box
+              </span>
+              <span style="display:flex;gap:18px;font-size:13px;font-weight:300;color:rgba(244,242,238,0.55)"><span>248 publicaciones</span><span>4,120 seguidores</span></span>
+            </span>
+          </div>
+          <a href="#instagram" style="display:inline-flex;align-items:center;gap:8px;border-radius:9999px;background:#e0a33c;color:#141416;padding:13px 24px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;transition:all 300ms" style-hover="background:#f0bd67;color:#141416">Seguir</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(244,242,238,0.08)">
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: guantes de box" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1636581563867-1ecab574858f?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: trabajo de técnica" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1716306886418-f84f6d4c2f3a?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: fila de costales" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1651707999601-cba87015439c?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: dentro del ring" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1561532325-7d5231a2dede?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: guantes del grupo infantil" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+          <a href="#instagram" style="position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#16161a">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&amp;fit=crop&amp;w=600&amp;h=600&amp;q=70" alt="Publicación: acondicionamiento" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.6) brightness(0.85);transition:all 400ms" style-hover="transform:scale(1.06);filter:saturate(0.8) brightness(1)">
+          </a>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:20px 26px;border-top:1px solid rgba(244,242,238,0.08)">
+          <span style="font-size:13px;font-weight:300;color:rgba(244,242,238,0.5)">Últimas 6 publicaciones · se actualiza solo</span>
+          <a href="#instagram" style="font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#e0a33c" style-hover="color:#f0bd67">Ver el perfil completo →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="entrenadores" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Entrenadores</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Personas ficticias, disciplina real. Todos con certificación vigente.</p>
+      </div>
+      <div style="width:100%;max-width:1152px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+        <sc-for list="{{ trainers }}" as="item" hint-placeholder-count="3">
+          <article style="display:flex;flex-direction:column;overflow:hidden;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.34)">
+            <img src="{{ item.img }}" alt="{{ item.name }}" style="width:100%;height:300px;object-fit:cover;filter:saturate(0.55) brightness(0.82)">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:24px 26px 28px">
+              <span style="font-size:11px;font-weight:500;letter-spacing:0.26em;text-transform:uppercase;color:#e0a33c">{{ item.role }}</span>
+              <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:24px;color:#f4f2ee">{{ item.name }}</h3>
+              <p style="margin:0;font-size:15px;font-weight:300;line-height:1.6;color:rgba(244,242,238,0.66);text-wrap:pretty">{{ item.bio }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="precios" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Membresías</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Precios de demostración, en pesos. La primera clase siempre va sin costo.</p>
+      </div>
+      <div style="width:100%;max-width:1100px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:stretch">
+        <sc-for list="{{ plans }}" as="item" hint-placeholder-count="3">
+          <article style="display:flex;flex-direction:column;gap:18px;padding:32px 28px;background:{{ item.bg }};border:1px solid {{ item.border }};border-radius:24px;transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.5)">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;color:#e0a33c">{{ item.name }}</span>
+              <span style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:{{ item.badgeColor }}">{{ item.badge }}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:46px;line-height:1;letter-spacing:-0.03em;color:#f4f2ee">{{ item.price }}</span>
+              <span style="font-size:14px;color:rgba(244,242,238,0.5)">{{ item.unit }}</span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;flex:1">
+              <sc-for list="{{ item.features }}" as="f" hint-placeholder-count="4">
+                <li style="display:flex;gap:10px;font-size:15px;font-weight:300;line-height:1.5;color:rgba(244,242,238,0.72)"><span style="color:#e0a33c">—</span>{{ f.text }}</li>
+              </sc-for>
+            </ul>
+            <a href="https://wa.me/520000000000" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:9999px;padding:14px 24px;background:{{ item.ctaBg }};color:{{ item.ctaColor }};border:1px solid {{ item.ctaBorder }};font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;transition:all 300ms" style-hover="opacity:0.85"><svg width="18" height="18" viewBox="0 0 360 362" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M307.546 52.5655C273.709 18.685 228.706 0.0171895 180.756 0C81.951 0 1.53846 80.404 1.50408 179.235C1.48689 210.829 9.74646 241.667 25.4319 268.844L0 361.736L95.0236 336.811C121.203 351.096 150.683 358.616 180.679 358.625H180.756C279.544 358.625 359.966 278.212 360 179.381C360.017 131.483 341.392 86.4547 307.546 52.5741V52.5655ZM180.756 328.354H180.696C153.966 328.346 127.744 321.16 104.865 307.589L99.4242 304.358L43.034 319.149L58.0834 264.168L54.5423 258.53C39.6304 234.809 31.749 207.391 31.7662 179.244C31.8006 97.1036 98.6334 30.2707 180.817 30.2707C220.61 30.2879 258.015 45.8015 286.145 73.9665C314.276 102.123 329.755 139.562 329.738 179.364C329.703 261.513 262.871 328.346 180.756 328.346V328.354ZM262.475 216.777C257.997 214.534 235.978 203.704 231.869 202.209C227.761 200.713 224.779 199.966 221.796 204.452C218.814 208.939 210.228 219.029 207.615 222.011C205.002 225.002 202.389 225.372 197.911 223.128C193.434 220.885 179.003 216.158 161.891 200.902C148.578 189.024 139.587 174.362 136.975 169.875C134.362 165.389 136.7 162.965 138.934 160.739C140.945 158.728 143.412 155.505 145.655 152.892C147.899 150.279 148.638 148.406 150.133 145.423C151.629 142.432 150.881 139.82 149.764 137.576C148.646 135.333 139.691 113.287 135.952 104.323C132.316 95.5909 128.621 96.777 125.879 96.6309C123.266 96.5019 120.284 96.4762 117.293 96.4762C114.302 96.4762 109.454 97.5935 105.346 102.08C101.238 106.566 89.6691 117.404 89.6691 139.441C89.6691 161.478 105.716 182.785 107.959 185.776C110.202 188.767 139.544 234.001 184.469 253.408C195.153 258.023 203.498 260.782 210.004 262.845C220.731 266.257 230.494 265.776 238.212 264.624C246.816 263.335 264.71 253.786 268.44 243.326C272.17 232.866 272.17 223.893 271.053 222.028C269.936 220.163 266.945 219.037 262.467 216.794L262.475 216.777Z"></path></svg>Empezar</a>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="resenas" style="display:flex;flex-direction:column;align-items:center;padding:80px 0;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center;padding:0 20px">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Lo que dicen</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Testimonios de ejemplo para esta demostración.</p>
+      </div>
+      <div style="width:100%;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)">
+        <div style="display:flex;width:max-content;gap:20px;animation:sg-marquee 46s linear infinite">
+          <sc-for list="{{ reviewsTrack }}" as="item" hint-placeholder-count="8">
+            <article style="width:340px;display:flex;flex-direction:column;gap:14px;padding:26px 28px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px">
+              <span style="font-size:15px;letter-spacing:0.14em;color:#e0a33c">★★★★★</span>
+              <p style="margin:0;font-size:16px;font-weight:300;line-height:1.6;color:rgba(244,242,238,0.75);text-wrap:pretty">{{ item.quote }}</p>
+              <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,242,238,0.5)">{{ item.author }}</span>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="ubicacion" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:96px;width:100%">
+      <div style="margin:0 auto 48px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-0.02em;text-transform:uppercase;color:#f4f2ee">Dónde estamos</h2>
+        <p style="margin:16px 0 0;font-size:18px;font-weight:300;color:rgba(244,242,238,0.65)">Dirección ficticia — se reemplaza en variables.json.</p>
+      </div>
+      <div style="width:100%;max-width:1024px;display:flex;flex-wrap:wrap;gap:24px">
+        <div style="flex:1 1 280px;min-height:340px;overflow:hidden;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px">
+          <img src="https://images.unsplash.com/photo-1545507268-27d6d8354f41?auto=format&amp;fit=crop&amp;w=700&amp;h=900&amp;q=70" alt="Ring de box del gimnasio" style="display:block;width:100%;height:100%;min-height:340px;object-fit:cover;filter:saturate(0.55) brightness(0.8)">
+        </div>
+        <div style="flex:2 1 380px;display:flex;flex-direction:column;gap:20px;padding:26px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px">
+          <div style="display:flex;gap:16px;padding:22px;background:rgba(224,163,60,0.07);border-radius:20px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:#e0a33c" aria-hidden="true"><path d="M15 10.5C15 12.1569 13.6569 13.5 12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19.5 10.5C19.5 17.6421 12 21.75 12 21.75C12 21.75 4.5 17.6421 4.5 10.5C4.5 6.35786 7.85786 3 12 3C16.1421 3 19.5 6.35786 19.5 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#f4f2ee">Super Gimnasio — Escuela de Box</h3>
+              <p style="margin:0;font-size:15px;font-weight:300;line-height:1.55;color:rgba(244,242,238,0.66)">Av. Ejemplo 1240, Col. Demostración, 45000 Zapopan, Jalisco</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;padding:22px;background:rgba(224,163,60,0.07);border-radius:20px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:#e0a33c" aria-hidden="true"><path d="M2.25 6.75C2.25 15.0343 8.96573 21.75 17.25 21.75H19.5C20.7426 21.75 21.75 20.7426 21.75 19.5V18.1284C21.75 17.6121 21.3987 17.1622 20.8979 17.037L16.4747 15.9312C16.0355 15.8214 15.5734 15.9855 15.3018 16.3476L14.3316 17.6412C14.05 18.0166 13.563 18.1827 13.1223 18.0212C9.81539 16.8098 7.19015 14.1846 5.97876 10.8777C5.81734 10.437 5.98336 9.94998 6.3588 9.6684L7.65242 8.69818C8.01453 8.4266 8.17861 7.96445 8.06883 7.52533L6.96304 3.10215C6.83783 2.60133 6.38785 2.25 5.87163 2.25H4.5C3.25736 2.25 2.25 3.25736 2.25 4.5V6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#f4f2ee">33 0000 0000</h3>
+              <p style="margin:0;font-size:15px;font-weight:300;color:rgba(244,242,238,0.66)">Lun a sáb, 6:00 a 22:00 h</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;padding:22px;background:rgba(224,163,60,0.07);border-radius:20px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:#e0a33c" aria-hidden="true"><path d="M13.5 21V13.5C13.5 13.0858 13.8358 12.75 14.25 12.75H17.25C17.6642 12.75 18 13.0858 18 13.5V21M13.5 21H2.36088M13.5 21H18M18 21H21.6391M20.25 21V9.34876M3.75 21V9.349M3.75 9.349C4.89729 10.0121 6.38977 9.85293 7.37132 8.87139C7.41594 8.82677 7.45886 8.78109 7.50008 8.73444C8.04979 9.3572 8.85402 9.74998 9.75 9.74998C10.646 9.74998 11.4503 9.35717 12 8.73435C12.5497 9.35717 13.354 9.74998 14.25 9.74998C15.1459 9.74998 15.9501 9.35725 16.4998 8.73456C16.541 8.78114 16.5838 8.82675 16.6284 8.8713C17.61 9.85293 19.1027 10.0121 20.25 9.34876M3.75 9.349C3.52788 9.22062 3.31871 9.06142 3.12868 8.87139C1.95711 7.69982 1.95711 5.80032 3.12868 4.62875L4.31797 3.43946C4.59927 3.15816 4.9808 3.00012 5.37863 3.00012H18.6212C19.019 3.00012 19.4005 3.15816 19.6818 3.43946L20.871 4.62866C22.0426 5.80023 22.0426 7.69973 20.871 8.8713C20.6811 9.06125 20.472 9.2204 20.25 9.34876M6.75 18H10.5C10.9142 18 11.25 17.6642 11.25 17.25V13.5C11.25 13.0858 10.9142 12.75 10.5 12.75H6.75C6.33579 12.75 6 13.0858 6 13.5V17.25C6 17.6642 6.33579 18 6.75 18Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#f4f2ee">Estacionamiento y transporte</h3>
+              <p style="margin:0;font-size:15px;font-weight:300;line-height:1.55;color:rgba(244,242,238,0.66)">Cajones sobre la avenida y parada de camión a 120 m. El mapa embebido entra aquí en la implementación.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1024px;margin-top:24px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;overflow:hidden">
+        <div style="position:relative;width:100%;padding-top:56.25%;background:#eceae4">
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%">
+            <div style="position:absolute;top:0;bottom:0;left:8%;width:9%;background:#e3e0d8"></div>
+            <div style="position:absolute;top:0;bottom:0;left:58%;width:14%;background:#e3e0d8"></div>
+            <div style="position:absolute;left:70%;right:4%;top:8%;height:26%;background:#cfe3c9"></div>
+            <div style="position:absolute;left:4%;width:16%;top:66%;height:26%;background:#dfe9f2"></div>
+            <div style="position:absolute;top:0;bottom:0;left:38%;width:20px;background:#ffffff;box-shadow:0 0 0 2px #d6d3cb"></div>
+            <div style="position:absolute;top:0;bottom:0;left:80%;width:12px;background:#ffffff;box-shadow:0 0 0 2px #dcd9d1"></div>
+            <div style="position:absolute;left:0;right:0;top:56%;height:26px;background:#fbd77f;box-shadow:0 0 0 2px #e6c574"></div>
+            <div style="position:absolute;left:0;right:0;top:22%;height:12px;background:#ffffff;box-shadow:0 0 0 2px #dcd9d1"></div>
+            <div style="position:absolute;left:0;right:0;top:82%;height:10px;background:#ffffff;box-shadow:0 0 0 2px #dcd9d1"></div>
+            <div style="position:absolute;top:56%;left:38%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px">
+              <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:#e0a33c;border:2px solid #ffffff;box-shadow:0 4px 10px rgba(0,0,0,0.28)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:#141416" aria-hidden="true"><path d="M15 10.5C15 12.1569 13.6569 13.5 12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19.5 10.5C19.5 17.6421 12 21.75 12 21.75C12 21.75 4.5 17.6421 4.5 10.5C4.5 6.35786 7.85786 3 12 3C16.1421 3 19.5 6.35786 19.5 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <span style="white-space:nowrap;padding:7px 14px;border-radius:9999px;background:#ffffff;box-shadow:0 3px 8px rgba(0,0,0,0.22);font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#3c3a35">Super Gimnasio</span>
+            </div>
+            <span style="position:absolute;top:calc(56% + 32px);left:20px;font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.14em;color:#6b6862">Av. Ejemplo</span>
+            <span style="position:absolute;bottom:14px;right:20px;font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.14em;color:#6b6862">Col. Demostración</span>
+            <span style="position:absolute;top:12%;left:72%;font-family:'Barlow',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;color:#5f7a58">Parque Ejemplo</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:18px 24px;border-top:1px solid rgba(244,242,238,0.08)">
+          <span style="font-size:13px;font-weight:300;color:rgba(244,242,238,0.5)">Mapa ficticio · aquí se incrusta el mapa real con la dirección del cliente</span>
+          <a href="#ubicacion" style="font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#e0a33c" style-hover="color:#f0bd67">Cómo llegar →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isService }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Clase" style="padding-top:80px">
+
+    <section style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:110px 20px 90px;min-height:56svh;justify-content:center;overflow:hidden">
+      <img src="{{ service.img }}" alt="{{ service.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(0.5) brightness(0.6);mask-image:linear-gradient(180deg,#000 0%,#000 42%,rgba(0,0,0,0.3) 76%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 42%,rgba(0,0,0,0.3) 76%,transparent 100%)">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,13,15,0.6) 0%,rgba(13,13,15,0.4) 38%,rgba(13,13,15,0.88) 80%,#0d0d0f 100%)"></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 20%,rgba(224,163,60,0.16) 0%,transparent 62%)"></div>
+      <div style="position:relative;max-width:820px;display:flex;flex-direction:column;align-items:center;gap:20px">
+        <span style="font-size:11px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:#e0a33c">{{ service.kicker }}</span>
+        <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,6.5vw,64px);line-height:1;letter-spacing:-0.03em;text-transform:uppercase;color:#f4f2ee">{{ service.name }}</h1>
+        <p style="margin:0;max-width:600px;font-size:18px;font-weight:300;line-height:1.6;color:rgba(244,242,238,0.72);text-wrap:pretty">{{ service.blurb }}</p>
+      </div>
+    </section>
+
+    <section id="s-horarios" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:160px;width:100%">
+      <div style="margin:0 auto 40px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);text-transform:uppercase;letter-spacing:-0.02em;color:#f4f2ee">Horarios de la clase</h2>
+      </div>
+      <div style="width:100%;max-width:820px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+        <sc-for list="{{ service.schedule }}" as="slot" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:6px;padding:22px 24px;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:20px">
+            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:22px;color:#e0a33c">{{ slot.hora }}</span>
+            <span style="font-size:15px;font-weight:300;color:rgba(244,242,238,0.7)">{{ slot.dias }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="s-precios" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:160px;width:100%">
+      <div style="margin:0 auto 40px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);text-transform:uppercase;letter-spacing:-0.02em;color:#f4f2ee">Cuánto cuesta</h2>
+        <p style="margin:14px 0 0;font-size:17px;font-weight:300;color:rgba(244,242,238,0.65)">Cifras de demostración, en pesos mexicanos.</p>
+      </div>
+      <div style="width:100%;max-width:820px;display:flex;flex-direction:column;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:24px;overflow:hidden">
+        <sc-for list="{{ service.pricing }}" as="row" hint-placeholder-count="3">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;padding:24px 28px;border-top:1px solid rgba(244,242,238,0.08)">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:#f4f2ee">{{ row.name }}</span>
+              <span style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.6)">{{ row.detail }}</span>
+            </div>
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.02em;color:#e0a33c">{{ row.price }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="s-galeria" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:160px;width:100%">
+      <div style="margin:0 auto 40px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);text-transform:uppercase;letter-spacing:-0.02em;color:#f4f2ee">Galería</h2>
+      </div>
+      <div style="width:100%;max-width:1024px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+        <sc-for list="{{ service.gallery }}" as="item" hint-placeholder-count="3">
+          <figure style="margin:0;overflow:hidden;background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:20px">
+            <img src="{{ item.src }}" alt="{{ item.alt }}" style="display:block;width:100%;height:260px;object-fit:cover;filter:saturate(0.6) brightness(0.85)">
+          </figure>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="s-faq" style="display:flex;flex-direction:column;align-items:center;padding:80px 20px;scroll-margin-top:160px;width:100%">
+      <div style="margin:0 auto 40px;max-width:768px;text-align:center">
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);text-transform:uppercase;letter-spacing:-0.02em;color:#f4f2ee">Preguntas frecuentes</h2>
+      </div>
+      <div style="width:100%;max-width:768px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ faqItems }}" as="item" hint-placeholder-count="4">
+          <div style="background:#16161a;border:1px solid rgba(224,163,60,0.14);border-radius:20px;overflow:hidden">
+            <button onClick="{{ item.onToggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;border:0;cursor:pointer;background:transparent;padding:22px 24px;font-family:'Archivo',sans-serif;font-weight:700;font-size:18px;color:#f4f2ee;transition:all 300ms" style-hover="color:#e0a33c">
+              {{ item.q }}
+              <span style="flex-shrink:0;font-size:22px;color:#e0a33c;transition:transform 300ms;transform:{{ item.iconTransform }}">+</span>
+            </button>
+            <div style="display:{{ item.display }};padding:0 24px 22px;font-size:16px;font-weight:300;line-height:1.65;color:rgba(244,242,238,0.7)">{{ item.a }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="display:flex;justify-content:center;padding:0 20px 60px">
+      <button onClick="{{ goHome }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(244,242,238,0.25);cursor:pointer;border-radius:9999px;background:transparent;padding:15px 28px;font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#f4f2ee;transition:all 300ms" style-hover="border-color:rgba(224,163,60,0.6);color:#e0a33c"><span style="font-size:16px">←</span> Volver al inicio</button>
+    </div>
+
+  </main>
+  </sc-if>
+
+  <footer style="border-top:1px solid rgba(244,242,238,0.08);background:#16161a">
+    <div style="margin:0 auto;width:100%;max-width:1280px;padding:56px 20px 32px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px;margin-bottom:40px">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;border:1px solid rgba(224,163,60,0.45);color:#e0a33c;font-family:'Archivo',sans-serif;font-weight:800;font-size:17px">SG</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.16em;text-transform:uppercase;color:#f4f2ee">Super Gimnasio</span>
+          </div>
+          <p style="margin:0;font-size:14px;font-weight:300;line-height:1.6;color:rgba(244,242,238,0.55)">Av. Ejemplo 1240, Col. Demostración, 45000 Zapopan, Jalisco<br>33 0000 0000</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(244,242,238,0.45)">Clases</h3>
+          <nav style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ serviceLinks }}" as="item" hint-placeholder-count="3">
+              <button onClick="{{ item.onClick }}" style="text-align:left;border:0;cursor:pointer;background:transparent;padding:0;font-size:14px;font-weight:300;color:rgba(244,242,238,0.65);transition:all 300ms" style-hover="color:#e0a33c">{{ item.name }}</button>
+            </sc-for>
+          </nav>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(244,242,238,0.45)">Explorar</h3>
+          <nav style="display:flex;flex-direction:column;gap:10px">
+            <a href="#horarios" style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.65)" style-hover="color:#e0a33c">Horarios</a>
+            <a href="#precios" style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.65)" style-hover="color:#e0a33c">Membresías</a>
+            <a href="#galeria" style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.65)" style-hover="color:#e0a33c">Galería</a>
+            <a href="#instagram" style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.65)" style-hover="color:#e0a33c">Instagram</a>
+            <a href="#ubicacion" style="font-size:14px;font-weight:300;color:rgba(244,242,238,0.65)" style-hover="color:#e0a33c">Ubicación</a>
+          </nav>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(244,242,238,0.45)">Síguenos</h3>
+          <div style="display:flex;gap:12px">
+            <a href="#top" aria-label="Instagram" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:rgba(224,163,60,0.08);color:#e0a33c;transition:all 300ms" style-hover="background:rgba(224,163,60,0.18)">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"></path></svg>
+            </a>
+            <a href="#top" aria-label="Facebook" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:rgba(224,163,60,0.08);color:#e0a33c;transition:all 300ms" style-hover="background:rgba(224,163,60,0.18)">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path></svg>
+            </a>
+            <a href="#top" aria-label="TikTok" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:rgba(224,163,60,0.08);color:#e0a33c;transition:all 300ms" style-hover="background:rgba(224,163,60,0.18)">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding-top:24px;border-top:1px solid rgba(244,242,238,0.08)">
+        <span style="font-size:12px;font-weight:300;color:rgba(244,242,238,0.4)">© {{ year }} Super Gimnasio — Escuela de Box. Sitio de demostración con datos ficticios.</span>
+        <span style="font-size:12px;font-weight:300;color:rgba(244,242,238,0.4)">Hecho en Jalisco</span>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/520000000000" target="_blank" rel="noopener noreferrer" style="position:fixed;bottom:24px;right:16px;z-index:90;display:inline-flex;align-items:center;gap:10px;border-radius:9999px;background:#25d366;color:#0d0d0f;padding:15px 26px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.06em;box-shadow:0 8px 24px rgba(0,0,0,0.45);transition:all 300ms" style-hover="background:#4ee287;color:#0d0d0f"><svg width="22" height="22" viewBox="0 0 360 362" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M307.546 52.5655C273.709 18.685 228.706 0.0171895 180.756 0C81.951 0 1.53846 80.404 1.50408 179.235C1.48689 210.829 9.74646 241.667 25.4319 268.844L0 361.736L95.0236 336.811C121.203 351.096 150.683 358.616 180.679 358.625H180.756C279.544 358.625 359.966 278.212 360 179.381C360.017 131.483 341.392 86.4547 307.546 52.5741V52.5655ZM180.756 328.354H180.696C153.966 328.346 127.744 321.16 104.865 307.589L99.4242 304.358L43.034 319.149L58.0834 264.168L54.5423 258.53C39.6304 234.809 31.749 207.391 31.7662 179.244C31.8006 97.1036 98.6334 30.2707 180.817 30.2707C220.61 30.2879 258.015 45.8015 286.145 73.9665C314.276 102.123 329.755 139.562 329.738 179.364C329.703 261.513 262.871 328.346 180.756 328.346V328.354ZM262.475 216.777C257.997 214.534 235.978 203.704 231.869 202.209C227.761 200.713 224.779 199.966 221.796 204.452C218.814 208.939 210.228 219.029 207.615 222.011C205.002 225.002 202.389 225.372 197.911 223.128C193.434 220.885 179.003 216.158 161.891 200.902C148.578 189.024 139.587 174.362 136.975 169.875C134.362 165.389 136.7 162.965 138.934 160.739C140.945 158.728 143.412 155.505 145.655 152.892C147.899 150.279 148.638 148.406 150.133 145.423C151.629 142.432 150.881 139.82 149.764 137.576C148.646 135.333 139.691 113.287 135.952 104.323C132.316 95.5909 128.621 96.777 125.879 96.6309C123.266 96.5019 120.284 96.4762 117.293 96.4762C114.302 96.4762 109.454 97.5935 105.346 102.08C101.238 106.566 89.6691 117.404 89.6691 139.441C89.6691 161.478 105.716 182.785 107.959 185.776C110.202 188.767 139.544 234.001 184.469 253.408C195.153 258.023 203.498 260.782 210.004 262.845C220.731 266.257 230.494 265.776 238.212 264.624C246.816 263.335 264.71 253.786 268.44 243.326C272.17 232.866 272.17 223.893 271.053 222.028C269.936 220.163 266.945 219.037 262.467 216.794L262.475 216.777Z"></path></svg>¡Agenda tu clase!</a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;ctaText&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Primera clase gratis&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;pricingHighlight&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Visita&quot;,&quot;Mensual&quot;,&quot;Anual&quot;],&quot;default&quot;:&quot;Mensual&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Membresías&quot;},&quot;showTrainers&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;}}">
+// Fotos fijas de Unsplash (demo). Al implementar, descargar y convertir a .avif en src/assets/.
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=70`;
+
+const PHOTO = {
+  sparring: '1517438322307-e67111335449',
+  boxeando: '1636581563867-1ecab574858f',
+  guantesNegros: '1549719386-74dfcbf7dbed',
+  guantesRojos: '1561532325-7d5231a2dede',
+  guantesGancho: '1633394782368-6e7260566004',
+  costales: '1716306886418-f84f6d4c2f3a',
+  costalesGym: '1754630591156-ef00f2e0d888',
+  ringGuantes: '1716307043003-dbe6a5cc496e',
+  ringHombre: '1651707999601-cba87015439c',
+  mancuerna: '1581009146145-b5ef050c2e1e',
+  sacosPiso: '1557564437-0995702f88fc',
+  banca: '1696563996353-214a3690bb11',
+  asistenteGym: '1548690312-e3b507d8c110',
+  entrenadorJoven: '1611672585731-fa10603fb9e0',
+  preparador: '1584466977773-e625c37cdd50'
+};
+
+const SERVICES = [
+  {
+    slug: 'principiantes',
+    name: 'Box para principiantes',
+    kicker: 'Desde cero',
+    blurb: 'Ocho semanas para aprender guardia, jab, movimiento y respiración. Sin sparring hasta que tú lo pidas.',
+    img: U(PHOTO.boxeando, 1200, 800),
+    schedule: [
+      { hora: '07:00', dias: 'Lunes, miércoles y viernes' },
+      { hora: '18:00', dias: 'Lunes a viernes' },
+      { hora: '19:30', dias: 'Martes y jueves' },
+      { hora: '09:00', dias: 'Sábado' }
+    ],
+    pricing: [
+      { name: 'Clase muestra', detail: 'Primera vez, guantes prestados', price: '$0' },
+      { name: 'Mensualidad', detail: 'Clases ilimitadas del programa', price: '$890' },
+      { name: 'Paquete 10 clases', detail: 'Vigencia de dos meses', price: '$1,400' }
+    ],
+    gallery: [
+      { src: U(PHOTO.guantesNegros, 800, 600), alt: 'Guantes de box' },
+      { src: U(PHOTO.ringGuantes, 800, 600), alt: 'Ring del gimnasio' },
+      { src: U(PHOTO.boxeando, 800, 600), alt: 'Trabajo de técnica' }
+    ],
+    faq: [
+      { q: '¿Necesito condición física para empezar?', a: 'No. La clase arranca con movilidad y va subiendo según el grupo. Si te falta el aire, paras y sigues cuando puedas.' },
+      { q: '¿Qué llevo el primer día?', a: 'Ropa deportiva, agua y toalla. Guantes y vendas los prestamos las primeras dos semanas.' },
+      { q: '¿Voy a pelear con alguien?', a: 'Solo si quieres y después de varios meses. El sparring es opcional, supervisado y con equipo completo.' },
+      { q: '¿Hay grupos por nivel?', a: 'Sí, tres niveles. Cambias de nivel cuando el entrenador y tú lo ven claro, no por tiempo cumplido.' }
+    ]
+  },
+  {
+    slug: 'ninos',
+    name: 'Clases para niños',
+    kicker: '6 a 14 años',
+    blurb: 'Coordinación, disciplina y juego. Sin contacto en los grupos menores y con reporte para papás cada mes.',
+    img: U(PHOTO.guantesRojos, 1200, 800),
+    schedule: [
+      { hora: '16:00', dias: 'Lunes, miércoles y viernes (6-9 años)' },
+      { hora: '17:00', dias: 'Lunes a viernes (10-14 años)' },
+      { hora: '10:00', dias: 'Sábado (grupo mixto)' },
+      { hora: '11:30', dias: 'Sábado (avanzados)' }
+    ],
+    pricing: [
+      { name: 'Clase muestra', detail: 'Con acompañante en sala', price: '$0' },
+      { name: 'Mensualidad', detail: 'Tres clases por semana', price: '$690' },
+      { name: 'Hermanos', detail: 'Segundo menor, mismo mes', price: '$490' }
+    ],
+    gallery: [
+      { src: U(PHOTO.guantesRojos, 800, 600), alt: 'Guantes del grupo infantil' },
+      { src: U(PHOTO.costales, 800, 600), alt: 'Costales del área infantil' },
+      { src: U(PHOTO.costalesGym, 800, 600), alt: 'Zona de costales' }
+    ],
+    faq: [
+      { q: '¿Hay contacto en las clases?', a: 'En 6 a 9 años no hay contacto. En 10 a 14 se hace contacto ligero con casco y protector, siempre con entrenador presente.' },
+      { q: '¿Puedo quedarme a ver la clase?', a: 'Sí. Hay banca para acompañantes y la primera clase pedimos que te quedes.' },
+      { q: '¿Qué equipo necesita?', a: 'Guantes de 8 oz y vendas cortas. Te decimos qué comprar después de la clase muestra.' },
+      { q: '¿Cómo miden el avance?', a: 'Cada mes se evalúan cuatro puntos: técnica, condición, atención y trato con los compañeros.' }
+    ]
+  },
+  {
+    slug: 'acondicionamiento',
+    name: 'Acondicionamiento y fuerza',
+    kicker: 'Condición general',
+    blurb: 'Circuitos con costal, cuerda, pesas y trabajo de core. Todo el beneficio del box sin necesidad de recibir un golpe.',
+    img: U(PHOTO.mancuerna, 1200, 800),
+    schedule: [
+      { hora: '06:00', dias: 'Lunes a viernes' },
+      { hora: '13:00', dias: 'Martes y jueves' },
+      { hora: '20:00', dias: 'Lunes, miércoles y viernes' },
+      { hora: '08:00', dias: 'Sábado y domingo' }
+    ],
+    pricing: [
+      { name: 'Clase suelta', detail: 'Sin membresía', price: '$130' },
+      { name: 'Mensualidad', detail: 'Acceso ilimitado a circuitos', price: '$790' },
+      { name: 'Entrenamiento 1:1', detail: 'Sesión de 60 minutos', price: '$450' }
+    ],
+    gallery: [
+      { src: U(PHOTO.mancuerna, 800, 600), alt: 'Área de pesas' },
+      { src: U(PHOTO.sacosPiso, 800, 600), alt: 'Material de acondicionamiento' },
+      { src: U(PHOTO.banca, 800, 600), alt: 'Interior del gimnasio' }
+    ],
+    faq: [
+      { q: '¿Se pega al costal?', a: 'Sí, el costal es parte del circuito, pero nadie golpea a otra persona en esta clase.' },
+      { q: '¿Cuánto dura la sesión?', a: 'Cincuenta minutos: diez de movilidad, treinta de circuito y diez de core y estiramiento.' },
+      { q: '¿Sirve si voy a otro gimnasio?', a: 'Sí, muchos la usan como cardio dos veces por semana. Podemos ajustar la carga.' },
+      { q: '¿Puedo pausar mi mensualidad?', a: 'Una pausa de hasta dos semanas por lesión o viaje, avisando antes.' }
+    ]
+  }
+];
+
+const SCHEDULE = [
+  ['06:00', ['Acond.', 'Acond.', 'Acond.', 'Acond.', 'Acond.', 'Acond.', 'Acond.']],
+  ['07:00', ['Princip.', '—', 'Princip.', '—', 'Princip.', 'Princip.', '—']],
+  ['16:00', ['Niños 6-9', 'Niños 10-14', 'Niños 6-9', 'Niños 10-14', 'Niños 6-9', 'Niños mixto', '—']],
+  ['18:00', ['Princip.', 'Princip.', 'Princip.', 'Princip.', 'Princip.', '—', '—']],
+  ['20:00', ['Acond.', 'Princip.', 'Acond.', 'Princip.', 'Acond.', '—', '—']]
+];
+
+const CELL_COLOR = { 'Princip.': '#e0a33c', 'Acond.': '#c9c3b6', '—': 'rgba(244,242,238,0.3)' };
+
+const REVIEWS = [
+  { quote: 'Llegué sin saber ni cerrar el puño. A los tres meses ya aguanto los seis rounds de costal y me sobra ánimo.', author: 'Ana L.' },
+  { quote: 'Mi hijo llegaba con toda la energía del día encima. Ahora duerme bien y pide ir los sábados.', author: 'Roberto M.' },
+  { quote: 'Nadie te mira raro por ser nuevo. Te corrigen la guardia y te dejan trabajar en paz.', author: 'Karla P.' },
+  { quote: 'Los circuitos de la mañana son lo único que me saca de la cama a las seis.', author: 'Diego T.' },
+  { quote: 'Me daba miedo entrar a un gimnasio de box. Aquí el trato es respetuoso desde la puerta.', author: 'Fernanda R.' },
+  { quote: 'Grupos chicos, así que sí te ven y sí te corrigen. Eso lo pagas gustoso.', author: 'Ismael G.' }
+];
+
+const TRAINERS = [
+  { name: 'Marisol Vega', role: 'Dirección técnica', bio: 'Doce años de amateur y ocho enseñando. Lleva los grupos de principiantes y la evaluación por niveles.', img: U(PHOTO.asistenteGym, 700, 800) },
+  { name: 'Tomás Iriarte', role: 'Infantil', bio: 'Profesor de educación física. Diseñó el programa de 6 a 14 años y el reporte mensual para familias.', img: U(PHOTO.entrenadorJoven, 700, 800) },
+  { name: 'Néstor Aguilar', role: 'Fuerza y condición', bio: 'Preparador físico. Arma los circuitos de la mañana y las sesiones uno a uno.', img: U(PHOTO.preparador, 700, 800) }
+];
+
+const PLAN_DEFS = [
+  { name: 'Visita', price: '$130', unit: '/ clase', badge: 'Sin ataduras', features: ['Una clase de cualquier grupo', 'Guantes y vendas prestados', 'Válida el mismo día', 'Sin inscripción'] },
+  { name: 'Mensual', price: '$890', unit: '/ mes', badge: 'Más elegido', features: ['Clases ilimitadas, todos los grupos', 'Evaluación de nivel cada mes', 'Acceso a área de fuerza', 'Cancelas cuando quieras'] },
+  { name: 'Anual', price: '$8,900', unit: '/ año', badge: 'Dos meses libres', features: ['Todo lo del plan mensual', 'Dos meses sin costo', 'Vendas y playera del club', 'Una sesión 1:1 al mes'] }
+];
+
+class Component extends DCLogic {
+  state = { menuOpen: false, page: 'home', faqOpen: 0 };
+
+  go = (page) => {
+    this.setState({ page, menuOpen: false, faqOpen: 0 });
+    window.scrollTo(0, 0);
+  };
+
+  renderVals() {
+    const page = this.state.page;
+    const service = SERVICES.find((s) => s.slug === page) || SERVICES[0];
+    const highlight = this.props.pricingHighlight ?? 'Mensual';
+    const showTrainers = this.props.showTrainers ?? true;
+
+    return {
+      year: new Date().getFullYear(),
+      ctaText: this.props.ctaText ?? 'Primera clase gratis',
+      menuOpen: this.state.menuOpen,
+      isHome: page === 'home',
+      isService: page !== 'home',
+      service,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      goHome: () => this.go('home'),
+      serviceLinks: SERVICES.map((s) => ({ name: s.name, onClick: () => this.go(s.slug) })),
+      serviceCards: SERVICES.map((s) => ({
+        name: s.name, kicker: s.kicker, blurb: s.blurb, img: s.img, onClick: () => this.go(s.slug)
+      })),
+      scheduleRows: SCHEDULE.map(([hora, cells]) => ({
+        hora,
+        cells: cells.map((label) => ({
+          label,
+          color: CELL_COLOR[label] || '#8fb0d8'
+        }))
+      })),
+      galleryImages: [
+        { src: U(PHOTO.guantesNegros, 800, 600), alt: 'Guantes listos antes de la clase' },
+        { src: U(PHOTO.costales, 800, 600), alt: 'Fila de costales' },
+        { src: U(PHOTO.ringGuantes, 800, 600), alt: 'Ring del gimnasio' },
+        { src: U(PHOTO.guantesGancho, 800, 600), alt: 'Guantes colgados' },
+        { src: U(PHOTO.ringHombre, 800, 600), alt: 'Trabajo dentro del ring' },
+        { src: U(PHOTO.costalesGym, 800, 600), alt: 'Zona de costales del gimnasio' }
+      ],
+      trainers: showTrainers ? TRAINERS : [],
+      plans: PLAN_DEFS.map((p) => {
+        const on = p.name === highlight;
+        return {
+          ...p,
+          features: p.features.map((text) => ({ text })),
+          bg: on ? 'rgba(224,163,60,0.09)' : '#16161a',
+          border: on ? 'rgba(224,163,60,0.45)' : 'rgba(224,163,60,0.14)',
+          badgeColor: on ? '#e0a33c' : 'rgba(244,242,238,0.4)',
+          ctaBg: on ? '#e0a33c' : 'transparent',
+          ctaColor: on ? '#141416' : '#f4f2ee',
+          ctaBorder: on ? '#e0a33c' : 'rgba(244,242,238,0.25)'
+        };
+      }),
+      reviewsTrack: REVIEWS.concat(REVIEWS),
+      faqItems: service.faq.map((f, i) => ({
+        q: f.q,
+        a: f.a,
+        display: this.state.faqOpen === i ? 'block' : 'none',
+        iconTransform: this.state.faqOpen === i ? 'rotate(45deg)' : 'rotate(0deg)',
+        onToggle: () => this.setState((s) => ({ faqOpen: s.faqOpen === i ? -1 : i }))
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

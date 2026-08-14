@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+@theme {
+  --color-brand-dark: #0d0d0f;      /* fondo base de la página */
+  --color-brand-surface: #16161a;   /* tarjetas, footer, drawer */
+  --color-brand-accent: #e0a33c;    /* ámbar: CTA, links, iconos, cifras */
+  --color-brand-muted: #9a9aa2;     /* texto secundario */
+  --color-brand-light: #f4f2ee;     /* texto principal */
+  --color-brand-kids: #8fb0d8;      /* solo la clase infantil en la tabla */
+  --color-brand-cta: #25d366;       /* WhatsApp, no cambia con la paleta */
+
+  --font-label: 'Archivo', sans-serif;  /* títulos, nav, botones, cifras */
+  --font-body: 'Barlow', sans-serif;    /* párrafos y textos de apoyo */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-brand-dark text-brand-light font-body antialiased;
+}
+
+a {
+  @apply text-brand-accent transition-colors duration-300;
+}
+
+a:hover {
+  @apply text-brand-accent/80;
+}

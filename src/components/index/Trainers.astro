@@ -1,0 +1,28 @@
+---
+import SectionHeading from '../common/SectionHeading.jsx';
+import { entrenadores } from '../../content/entrenadores';
+---
+
+<section id="entrenadores" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+  <SectionHeading
+    title="Entrenadores"
+    subtitle="Personas ficticias, disciplina real. Todos con certificación vigente."
+  />
+  <div class="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+    {entrenadores.map((e) => (
+      <article class="gsap-reveal-card flex flex-col overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface transition-all duration-300 hover:border-brand-accent/35 md:rounded-3xl">
+        <img
+          src={e.foto.url}
+          alt={e.foto.alt}
+          loading="lazy"
+          class="h-72 w-full object-cover saturate-55 brightness-82"
+        />
+        <div class="flex flex-col gap-2.5 px-6.5 py-7">
+          <span class="text-[11px] font-medium uppercase tracking-[0.26em] text-brand-accent">{e.rol}</span>
+          <h3 class="m-0 font-label text-xl font-bold text-brand-light">{e.nombre}</h3>
+          <p class="m-0 text-[15px] font-light leading-relaxed text-brand-light/66">{e.bio}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

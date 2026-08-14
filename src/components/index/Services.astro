@@ -1,0 +1,39 @@
+---
+import SectionHeading from '../common/SectionHeading.jsx';
+import { servicios } from '../../content/servicios';
+---
+
+<section id="servicios" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+  <SectionHeading
+    title="Qué ofrecemos"
+    subtitle="Tres caminos, un mismo gimnasio. Puedes cambiar de clase cuando quieras."
+  />
+  <div class="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+    {servicios.map((s) => (
+      <article class="gsap-reveal-card flex flex-col overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface shadow-sm transition-all duration-300 hover:border-brand-accent/35 hover:shadow-md md:rounded-3xl">
+        <div class="relative h-56 overflow-hidden">
+          <img
+            src={s.foto.url}
+            alt={s.foto.alt}
+            loading="lazy"
+            class="h-full w-full object-cover saturate-60 brightness-80 transition-transform duration-500 hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-linear-to-b from-brand-surface/0 to-brand-surface" style="background-image:linear-gradient(180deg,rgba(22,22,26,0) 40%,#16161a 100%)" />
+        </div>
+        <div class="flex flex-1 flex-col gap-3 px-6.5 py-7">
+          <span class="font-body text-[11px] font-medium uppercase tracking-[0.26em] text-brand-accent">
+            {s.kicker}
+          </span>
+          <h3 class="m-0 font-label text-2xl font-bold tracking-tight text-brand-light">{s.nombre}</h3>
+          <p class="m-0 flex-1 text-base font-light leading-relaxed text-brand-light/66">{s.resumen}</p>
+          <a
+            href={`/${s.slug}/`}
+            class="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-brand-accent/30 px-5 py-2.75 font-label text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent transition-all duration-300 hover:border-brand-accent/60 hover:bg-brand-accent/14"
+          >
+            Ver clase <span class="text-sm">→</span>
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

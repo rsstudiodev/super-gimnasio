@@ -1,0 +1,43 @@
+---
+import { sitio } from '../../content/sitio';
+---
+
+<div class="mt-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface md:rounded-3xl">
+  <div class="relative w-full pt-[56.25%]" style="background:#eceae4">
+    <div class="absolute inset-0">
+      <div class="absolute inset-y-0 left-[8%] w-[9%]" style="background:#e3e0d8" />
+      <div class="absolute inset-y-0 left-[58%] w-[14%]" style="background:#e3e0d8" />
+      <div class="absolute left-[70%] right-[4%] top-[8%] h-[26%]" style="background:#cfe3c9" />
+      <div class="absolute left-[4%] top-[66%] h-[26%] w-[16%]" style="background:#dfe9f2" />
+      <div class="absolute inset-y-0 left-[38%] w-5" style="background:#fff;box-shadow:0 0 0 2px #d6d3cb" />
+      <div class="absolute inset-y-0 left-[80%] w-3" style="background:#fff;box-shadow:0 0 0 2px #dcd9d1" />
+      <div class="absolute left-0 right-0 top-[56%] h-6.5" style="background:#fbd77f;box-shadow:0 0 0 2px #e6c574" />
+      <div class="absolute left-0 right-0 top-[22%] h-3" style="background:#fff;box-shadow:0 0 0 2px #dcd9d1" />
+      <div class="absolute left-0 right-0 top-[82%] h-2.5" style="background:#fff;box-shadow:0 0 0 2px #dcd9d1" />
+
+      <div class="absolute left-[38%] top-[56%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2">
+        <span class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white bg-brand-accent shadow-lg">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:#141416" aria-hidden="true">
+            <path d="M15 10.5C15 12.1569 13.6569 13.5 12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.5 10.5C19.5 17.6421 12 21.75 12 21.75C12 21.75 4.5 17.6421 4.5 10.5C4.5 6.35786 7.85786 3 12 3C16.1421 3 19.5 6.35786 19.5 10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span
+          class="whitespace-nowrap rounded-full bg-white px-3.5 py-1.75 font-label text-xs font-bold uppercase tracking-[0.12em] shadow-md"
+          style="color:#3c3a35"
+        >
+          {sitio.nombreCorto}
+        </span>
+      </div>
+      <span class="absolute left-5 font-body text-xs font-medium tracking-[0.14em]" style="top:calc(56% + 32px);color:#6b6862">Av. Ejemplo</span>
+      <span class="absolute bottom-3.5 right-5 font-body text-xs font-medium tracking-[0.14em]" style="color:#6b6862">Col. Demostración</span>
+      <span class="absolute left-[72%] top-[12%] font-body text-[11px] font-medium tracking-[0.12em]" style="color:#5f7a58">Parque Ejemplo</span>
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-brand-light/8 px-6 py-4.5">
+    <span class="text-[13px] font-light text-brand-light/50">Mapa ficticio · aquí se incrusta el mapa real con la dirección del cliente</span>
+    <a href="#ubicacion" class="font-label text-[13px] font-semibold uppercase tracking-[0.12em] text-brand-accent hover:text-brand-accent/80">
+      Cómo llegar →
+    </a>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+---
+import SectionHeading from '../common/SectionHeading.jsx';
+import { membresias } from '../../content/membresias';
+import { whatsappUrl } from '../../content/sitio';
+import WhatsappIcon from '../../assets/external/whatsapp-white.svg?raw';
+---
+
+<section id="precios" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+  <SectionHeading
+    title="Membresías"
+    subtitle="Precios de demostración, en pesos. La primera clase siempre va sin costo."
+  />
+  <div class="grid w-full max-w-6xl grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+    {membresias.map((m) => (
+      <article
+        class:list={[
+          'gsap-reveal-card flex flex-col gap-4.5 rounded-2xl border p-7 transition-all duration-300 hover:border-brand-accent/50 md:rounded-3xl',
+          m.destacada ? 'border-brand-accent/45 bg-brand-accent/9' : 'border-brand-accent/14 bg-brand-surface',
+        ]}
+      >
+        <div class="flex items-center justify-between gap-3">
+          <span class="font-label text-xs font-semibold uppercase tracking-[0.24em] text-brand-accent">{m.nombre}</span>
+          <span class:list={['text-[11px] uppercase tracking-[0.18em]', m.destacada ? 'text-brand-accent' : 'text-brand-light/40']}>
+            {m.distintivo}
+          </span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="font-label text-5xl font-extrabold tracking-tight text-brand-light">{m.precio}</span>
+          <span class="text-sm text-brand-light/50">{m.unidad}</span>
+        </div>
+        <ul class="m-0 flex flex-1 list-none flex-col gap-2.5 p-0">
+          {m.incluye.map((item) => (
+            <li class="flex gap-2.5 text-[15px] font-light leading-snug text-brand-light/72">
+              <span class="text-brand-accent">—</span>{item}
+            </li>
+          ))}
+        </ul>
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={[
+            'inline-flex items-center justify-center gap-2.5 rounded-full border px-6 py-3.5 font-label text-[13px] font-bold uppercase tracking-[0.12em] transition-all duration-300 hover:opacity-85 [&_svg]:h-4.5 [&_svg]:w-4.5',
+            m.destacada
+              ? 'border-brand-accent bg-brand-accent text-brand-dark [&_svg]:fill-brand-dark'
+              : 'border-brand-light/25 bg-transparent text-brand-light [&_svg]:fill-brand-light',
+          ]}
+          set:html={`${WhatsappIcon}Empezar`}
+        />
+      </article>
+    ))}
+  </div>
+</section>

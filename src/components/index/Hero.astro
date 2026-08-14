@@ -1,0 +1,89 @@
+---
+import type { Foto } from '../../content/types';
+
+interface Props {
+  foto: Foto;
+  variant?: 'home' | 'service';
+  badge?: string;
+  kicker?: string;
+  titulo: string;
+  texto: string;
+  cifras?: { valor: string; etiqueta: string }[];
+}
+
+const { foto, variant = 'home', badge, kicker, titulo, texto, cifras } = Astro.props;
+const isHome = variant === 'home';
+---
+
+<section
+  id={isHome ? 'top' : undefined}
+  class:list={[
+    'relative flex w-full flex-col items-center justify-center overflow-hidden px-5 text-center md:px-6',
+    isHome ? 'min-h-svh py-30 pb-20' : 'min-h-[56svh] py-28',
+  ]}
+>
+  <img
+    src={foto.url}
+    alt={foto.alt}
+    loading="eager"
+    class="absolute inset-0 h-full w-full object-cover saturate-50 brightness-60"
+    style={`mask-image:linear-gradient(180deg,#000 0,#000 ${isHome ? '46%' : '42%'},rgba(0,0,0,.35) ${isHome ? '78%' : '76%'},transparent);-webkit-mask-image:linear-gradient(180deg,#000 0,#000 ${isHome ? '46%' : '42%'},rgba(0,0,0,.35) ${isHome ? '78%' : '76%'},transparent)`}
+  />
+  <div class="absolute inset-0 bg-linear-to-b from-brand-dark/55 via-brand-dark/35 to-brand-dark" style="background-image:linear-gradient(180deg,rgba(13,13,15,.55) 0%,rgba(13,13,15,.35) 40%,rgba(13,13,15,.85) 82%,#0d0d0f 100%)" />
+  <div class="absolute inset-0" style="background-image:radial-gradient(120% 70% at 50% 18%,rgba(224,163,60,.16) 0%,transparent 62%)" />
+
+  <div class:list={['relative flex w-full flex-col items-center gap-7', isHome ? 'max-w-4xl' : 'max-w-3xl gap-5']}>
+    {isHome && badge && (
+      <span class="inline-flex items-center gap-2.5 rounded-full border border-brand-accent/35 bg-brand-accent/10 px-5 py-2.25 font-label text-xs font-semibold uppercase tracking-[0.26em] text-brand-accent">
+        {badge}
+      </span>
+    )}
+    {!isHome && kicker && (
+      <span class="font-label text-[11px] font-medium uppercase tracking-[0.3em] text-brand-accent">{kicker}</span>
+    )}
+
+    <h1
+      class:list={[
+        'm-0 text-wrap-balance font-label font-extrabold uppercase leading-none tracking-tight text-brand-light',
+        isHome ? 'text-[clamp(40px,8.5vw,88px)]' : 'text-[clamp(34px,6.5vw,64px)]',
+      ]}
+      set:html={titulo}
+    />
+    <p
+      class:list={[
+        'm-0 text-wrap-pretty font-light leading-relaxed text-brand-light/72',
+        isHome ? 'max-w-2xl text-[clamp(17px,2.2vw,21px)]' : 'max-w-xl text-lg',
+      ]}
+    >
+      {texto}
+    </p>
+
+    {isHome && (
+      <div class="flex flex-wrap justify-center gap-3.5">
+        <a
+          href="#servicios"
+          class="inline-flex items-center gap-2.5 rounded-full bg-brand-accent px-7.5 py-4 font-label text-sm font-bold uppercase tracking-[0.1em] text-brand-dark transition-all duration-300 hover:bg-brand-accent/80"
+        >
+          Ver las clases <span class="text-lg">→</span>
+        </a>
+        <a
+          href="#horarios"
+          class="inline-flex items-center gap-2.5 rounded-full border border-brand-light/25 px-7.5 py-4 font-label text-sm font-semibold uppercase tracking-[0.1em] text-brand-light transition-all duration-300 hover:border-brand-accent/60 hover:text-brand-accent"
+        >
+          Horarios
+        </a>
+      </div>
+    )}
+
+    {isHome && cifras && (
+      <div class="mt-4.5 flex flex-wrap justify-center gap-8">
+        {cifras.map((c) => (
+          <div class="flex flex-col gap-1">
+            <span class="font-label text-3xl font-extrabold text-brand-accent">{c.valor}</span>
+            <span class="text-xs uppercase tracking-[0.22em] text-brand-light/50">{c.etiqueta}</span>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

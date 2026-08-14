@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from './index/Hero.astro';
+import Accordion from './common/Accordion.jsx';
+import { servicios } from '../content/servicios';
+import { sitio } from '../content/sitio';
+import type { Servicio } from '../content/types';
+
+interface Props {
+  slug: Servicio['slug'];
+}
+
+const { slug } = Astro.props;
+const servicio = servicios.find((s) => s.slug === slug)!;
+
+const seo = {
+  title: `${servicio.nombre} · ${sitio.nombreCorto}`,
+  description: servicio.resumen,
+};
+---
+
+<Layout seo={seo}>
+  <main class="pt-20">
+    <Hero
+      foto={servicio.foto}
+      variant="service"
+      kicker={servicio.kicker}
+      titulo={servicio.nombre}
+      texto={servicio.resumen}
+    />
+
+    <section id="s-horarios" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+      <div class="mx-auto mb-10 max-w-3xl text-center">
+        <h2 class="m-0 font-label text-[clamp(28px,4.5vw,44px)] font-extrabold uppercase tracking-tight text-brand-light">
+          Horarios de la clase
+        </h2>
+      </div>
+      <div class="grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
+        {servicio.horarios.map((h) => (
+          <div class="flex flex-col gap-1.5 rounded-2xl border border-brand-accent/14 bg-brand-surface px-6 py-5.5">
+            <span class="font-label text-2xl font-bold text-brand-accent">{h.hora}</span>
+            <span class="text-[15px] font-light text-brand-light/70">{h.dias}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="s-precios" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+      <div class="mx-auto mb-10 max-w-3xl text-center">
+        <h2 class="m-0 font-label text-[clamp(28px,4.5vw,44px)] font-extrabold uppercase tracking-tight text-brand-light">
+          Cuánto cuesta
+        </h2>
+        <p class="mt-3.5 text-[17px] font-light text-brand-light/65">Cifras de demostración, en pesos mexicanos.</p>
+      </div>
+      <div class="flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface">
+        {servicio.precios.map((p) => (
+          <div class="flex flex-wrap items-baseline justify-between gap-3 border-t border-brand-light/8 px-7 py-6 first:border-t-0">
+            <div class="flex flex-col gap-1">
+              <span class="font-label text-lg font-bold text-brand-light">{p.nombre}</span>
+              <span class="text-sm font-light text-brand-light/60">{p.detalle}</span>
+            </div>
+            <span class="font-label text-3xl font-extrabold tracking-tight text-brand-accent">{p.precio}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="s-galeria" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+      <div class="mx-auto mb-10 max-w-3xl text-center">
+        <h2 class="m-0 font-label text-[clamp(28px,4.5vw,44px)] font-extrabold uppercase tracking-tight text-brand-light">
+          Galería
+        </h2>
+      </div>
+      <div class="grid w-full max-w-5xl grid-cols-1 gap-5 sm:grid-cols-3">
+        {servicio.galeria.map((f) => (
+          <figure class="m-0 overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface">
+            <img src={f.url} alt={f.alt} loading="lazy" class="block h-64 w-full object-cover saturate-60 brightness-85" />
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section id="s-faq" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+      <div class="mx-auto mb-10 max-w-3xl text-center">
+        <h2 class="m-0 font-label text-[clamp(28px,4.5vw,44px)] font-extrabold uppercase tracking-tight text-brand-light">
+          Preguntas frecuentes
+        </h2>
+      </div>
+      <Accordion items={servicio.faq} />
+    </section>
+
+    <div class="flex justify-center px-5 pb-16">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2.5 rounded-full border border-brand-light/25 px-7 py-3.75 font-label text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-light transition-all duration-300 hover:border-brand-accent/60 hover:text-brand-accent"
+      >
+        <span class="text-base">←</span> Volver al inicio
+      </a>
+    </div>
+  </main>
+</Layout>

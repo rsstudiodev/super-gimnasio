@@ -1,0 +1,59 @@
+---
+import SectionHeading from '../common/SectionHeading.jsx';
+import { tablaSemanal, diasSemana, leyendaHorarios, colorClase } from '../../content/horarios';
+import type { ClaseTabla } from '../../content/types';
+
+const bgClase: Record<ClaseTabla, string> = {
+  principiantes: 'bg-brand-accent',
+  ninos: 'bg-brand-kids',
+  acondicionamiento: 'bg-brand-light/80',
+  libre: 'bg-brand-light/30',
+};
+---
+
+<section id="horarios" class="flex w-full scroll-mt-24 flex-col items-center px-5 py-20 md:px-6">
+  <SectionHeading
+    title="Horarios"
+    subtitle="Llega 10 minutos antes si es tu primera vez. Datos de demostración."
+  />
+  <div class="w-full max-w-6xl overflow-hidden rounded-2xl border border-brand-accent/14 bg-brand-surface md:rounded-3xl">
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[760px] border-collapse text-sm">
+        <thead>
+          <tr>
+            <th class="bg-brand-accent/8 px-5 py-4.5 text-left font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-accent">
+              Hora
+            </th>
+            {diasSemana.map((d) => (
+              <th class="bg-brand-accent/8 px-3.5 py-4.5 text-left font-label text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-accent">
+                {d}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tablaSemanal.map((fila) => (
+            <tr>
+              <td class="whitespace-nowrap border-t border-brand-light/8 px-5 py-4 font-label text-base font-bold text-brand-light">
+                {fila.hora}
+              </td>
+              {fila.celdas.map((celda) => (
+                <td class={`border-t border-brand-light/8 px-3.5 py-4 text-[13px] leading-tight ${colorClase[celda.clase]}`}>
+                  {celda.etiqueta}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-6.5 flex flex-wrap justify-center gap-5">
+    {leyendaHorarios.map((l) => (
+      <span class="inline-flex items-center gap-2.25 text-[13px] text-brand-light/60">
+        <span class={`h-2.5 w-2.5 rounded-full ${bgClase[l.clase]}`}></span>
+        {l.etiqueta}
+      </span>
+    ))}
+  </div>
+</section>
