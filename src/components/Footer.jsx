@@ -49,7 +49,7 @@ export default function Footer() {
               {servicios.map((s) => (
                 <a
                   key={s.slug}
-                  href={`/${s.slug}/`}
+                  href={`/super-gimnasio/${s.slug}/`}
                   className="text-sm font-light text-brand-light/65 hover:text-brand-accent"
                 >
                   {s.nombre}
@@ -66,7 +66,7 @@ export default function Footer() {
               {explorar.map((e) => (
                 <a
                   key={e.href}
-                  href={e.href}
+                  href={`/super-gimnasio/${e.href}`}
                   className="text-sm font-light text-brand-light/65 hover:text-brand-accent"
                 >
                   {e.label}
