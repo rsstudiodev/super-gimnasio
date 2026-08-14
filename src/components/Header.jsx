@@ -79,7 +79,7 @@ export default function Header() {
                 {anchors.map((a) => (
                   <a
                     key={a.href}
-                    href={a.href}
+                    href={`/super-gimnasio/${a.href}`}
                     onClick={() => setOpen(false)}
                     className="rounded-2xl px-4 py-2.5 font-label text-xl font-semibold text-brand-light transition-all duration-300 hover:bg-brand-accent/8 hover:text-brand-accent"
                   >
