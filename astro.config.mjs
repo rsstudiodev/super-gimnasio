@@ -7,10 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  /*
-  site: 'https://ricsasa.work',
-  base: '',
-  */
+  site: 'https://rsstudiodev.github.io',
+  base: '/super-gimnasio',
   integrations: [react(), sitemap(), partytown()],
 
   vite: {
