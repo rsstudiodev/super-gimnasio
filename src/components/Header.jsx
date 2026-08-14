@@ -66,7 +66,7 @@ export default function Header() {
                 {servicios.map((s) => (
                   <a
                     key={s.slug}
-                    href={`/${s.slug}/`}
+                    href={`/super-gimnasio/${s.slug}/`}
                     onClick={() => setOpen(false)}
                     className="rounded-2xl px-4 py-3 font-label text-2xl font-bold tracking-tight text-brand-light transition-all duration-300 hover:bg-brand-accent/10 hover:text-brand-accent"
                   >
