@@ -20,7 +20,7 @@ export default function Header() {
     <>
       <header className="fixed top-0 left-0 z-100 w-full h-20 backdrop-blur-3xl bg-brand-dark/70 border-b border-brand-light/8">
         <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 px-5 md:px-6">
-          <a href="/#top" className="flex items-center gap-3 text-brand-light">
+          <a href="/super-gimnasio/#top" className="flex items-center gap-3 text-brand-light">
             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-accent/45 font-label text-base font-extrabold tracking-tight text-brand-accent">
               {sitio.marcaIniciales}
             </span>

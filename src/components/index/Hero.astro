@@ -54,13 +54,7 @@ const isHome = variant === "home";
       isHome ? "max-w-4xl" : "max-w-3xl gap-5",
     ]}
   >
-    {
-      isHome && badge && (
-        <span class="inline-flex items-center gap-2.5 rounded-full border border-brand-accent/35 bg-brand-accent/10 px-5 py-2.25 font-label text-xs font-semibold uppercase tracking-[0.26em] text-brand-accent">
-          {badge}
-        </span>
-      )
-    }
+
     {
       !isHome && kicker && (
         <span class="font-label text-[11px] font-medium uppercase tracking-[0.3em] text-brand-accent">
@@ -102,23 +96,6 @@ const isHome = variant === "home";
           >
             Horarios
           </a>
-        </div>
-      )
-    }
-
-    {
-      isHome && cifras && (
-        <div class="mt-4.5 flex flex-wrap justify-center gap-8">
-          {cifras.map((c) => (
-            <div class="flex flex-col gap-1">
-              <span class="font-label text-3xl font-extrabold text-brand-accent">
-                {c.valor}
-              </span>
-              <span class="text-xs uppercase tracking-[0.22em] text-brand-light/50">
-                {c.etiqueta}
-              </span>
-            </div>
-          ))}
         </div>
       )
     }
